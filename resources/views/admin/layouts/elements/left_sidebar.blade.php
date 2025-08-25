@@ -20,10 +20,17 @@
 			</a>
 		</li>
 
-		<li class="menu-item {{ request()->is('admin/users') ? 'active' : ''}}">
+		<li class="menu-item {{ request()->is('admin/list') ? 'active' : ''}}">
 			<a href="{{route('admin.student.info.list')}}" class="menu-link">
 				<i class="menu-icon tf-icons bx bx-group"></i>
 				<div data-i18n="User">Student Info</div>
+			</a>
+		</li>
+
+		<li class="menu-item {{ request()->is('admin/import') ? 'active' : ''}}">
+			<a href="{{route('admin.student.info.import')}}" class="menu-link">
+				<i class="menu-icon tf-icons bx bx-group"></i>
+				<div data-i18n="User">Student Import</div>
 			</a>
 		</li>
 	</ul>

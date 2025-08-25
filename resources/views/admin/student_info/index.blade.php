@@ -25,17 +25,19 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Roll No</th>
-                                    <th>Phone</th>
+                                    <th>Application Number</th>
+                                    <th>Gender</th>
+                                    <th>Date of birth</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($students as $student)
                                     <tr>
-                                        <td>{{ $student->name }}</td>
-                                        <td>{{ $student->roll_no }}</td>
-                                        <td>{{ $student->phone }}</td>
+                                        <td>{{ $student->student_name }}</td>
+                                        <td>{{ $student->application_no }}</td>
+                                        <td>{{ $student->gender }}</td>
+                                        <td>{{ $student->dob }}</td>
                                         <td>
                                             <a href="{{ route('admin.student.info.show', $student->id) }}" class="btn btn-sm btn-primary">View</a>
                                         </td>
