@@ -18,19 +18,32 @@
     </div>
     <div class="row">
         <div class="col-xl-12 col-lg-12">
+            @if(isset($error))
+                <div class="alert alert-danger">
+                    {{ $error }}
+                </div>
+            @endif
             <div class="card">
                 <div class="card-body">
                     <form action="{{ route('admin.student.info.search') }}" method="GET" class="mb-4">
                         <div class="row g-3 align-items-end">
-                            <div class="col-md-4">
-                                <label for="sr_number" class="form-label">SR Number</label>
-                                <input type="text" id="sr_number" name="sr_number" class="form-control" value="{{ request('sr_number') }}" placeholder="Enter SR Number">
+                            <div class="col-md-6">
+                                <label for="application_no" class="form-label">Application Number</label>
+                                <input type="text" id="application_no" name="application_no" class="form-control" value="{{ request('application_no') }}" placeholder="Enter Application Number">
                             </div>
-                            <div class="col-md-4">
-                                <label for="phone" class="form-label">Form Number</label>
-                                <input type="text" id="phone" name="phone" class="form-control" value="{{ request('form_number') }}" placeholder="Enter Form Number">
+                            <div class="col-md-6">
+                                <label for="mobile" class="form-label">Mobile Number</label>
+                                <input type="text" id="mobile" name="mobile" class="form-control" value="{{ request('mobile') }}" placeholder="Enter Mobile Number">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
+                                <label for="father_name" class="form-label">Father Name</label>
+                                <input type="text" id="father_name" name="father_name" class="form-control" value="{{ request('father_name') }}" placeholder="Enter Father Name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dob" class="form-label">Date of Birth</label>
+                                <input type="date" id="dob" name="dob" class="form-control" value="{{ request('dob') }}" placeholder="Enter Date of Birth">
+                            </div>
+                            <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary">Search</button>
                                 <a href="{{ route('admin.student.info.search') }}" class="btn btn-secondary">Reset</a>
                             </div>
@@ -39,30 +52,30 @@
 
                     @if(isset($students))
                         <div class="table-responsive text-nowrap">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" id="usersTable">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Roll No</th>
-                                        <th>SR Number</th>
-                                        <th>Phone</th>
+                                        <th>Application Number</th>
+                                        <th>Gender</th>
+                                        <th>Date of birth</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($students as $student)
                                         <tr>
-                                            <td>{{ $student->name }}</td>
-                                            <td>{{ $student->roll_no }}</td>
-                                            <td>{{ $student->sr_number }}</td>
-                                            <td>{{ $student->phone }}</td>
+                                            <td>{{ $student->student_name }}</td>
+                                            <td>{{ $student->application_no }}</td>
+                                            <td>{{ $student->gender }}</td>
+                                            <td>{{ $student->dob }}</td>
                                             <td>
                                                 <a href="{{ route('admin.student.info.show', $student->id) }}" class="btn btn-sm btn-primary">View</a>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center">No students found.</td>
+                                            <td colspan="4" class="text-center">No students found.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

@@ -67,6 +67,9 @@ Route::name('admin.')->prefix('admin')->group(function () {
 
             Route::post("student-import-post", [StudentInfoController::class, 'importpost'])->name('import.post');
 
+            Route::post('/student/generate-tc', [StudentInfoController::class, 'generateTC'])->name('generate.tc');
+
+
         });
     });
 

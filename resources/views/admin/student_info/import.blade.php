@@ -11,7 +11,7 @@
             </h5>
         </div>
         <div class="col-md-6 text-end">
-            <a href="{{ route('admin.student.info.list') }}" class="btn btn-primary">
+            <a href="{{ route('admin.student.info.search') }}" class="btn btn-primary">
                 Search Student
             </a>
         </div>
