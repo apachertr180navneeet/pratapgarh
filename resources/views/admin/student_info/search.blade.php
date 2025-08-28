@@ -49,42 +49,6 @@
                             </div>
                         </div>
                     </form>
-
-                    @if(isset($students))
-                        <div class="table-responsive text-nowrap">
-                            <table class="table table-bordered" id="usersTable">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Application Number</th>
-                                        <th>Gender</th>
-                                        <th>Date of birth</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($students as $student)
-                                        <tr>
-                                            <td>{{ $student->student_name }}</td>
-                                            <td>{{ $student->application_no }}</td>
-                                            <td>{{ $student->gender }}</td>
-                                            <td>{{ $student->dob }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.student.info.show', $student->id) }}" class="btn btn-sm btn-primary">View</a>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="4" class="text-center">No students found.</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="d-flex justify-content-end mt-4 mb-2">
-                            {{ $students->links() }}
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

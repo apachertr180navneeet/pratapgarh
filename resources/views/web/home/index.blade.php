@@ -1,14 +1,32 @@
 @extends('web.layouts.app')
-@section('title', 'Search Student')
-@section('header', 'Search Student Info')
-@section('subheader', 'Find student details quickly using SR Number, Form Number, or other details')
+@section('title', 'Student Details')
+@section('header', 'Student Info')
+@section('subheader', 'Add your details below')
 
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-10">
+        {{-- ✅ Success message --}}
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        {{-- ✅ Error messages --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="card shadow card-custom">
             <div class="card-body">
-                <form action="{{ route('search.student') }}" method="get" class="row g-3 align-items-center">
+                <form action="{{ route('submit.student') }}" method="post" class="row g-3 align-items-center" enctype="multipart/form-data">
                     @csrf
 
                     {{-- Application Number --}}
@@ -32,6 +50,13 @@
                                class="form-control" value="{{ request('father_name') }}" placeholder="Enter Father Name">
                     </div>
 
+                    {{-- Mother Name --}}
+                    <div class="col-md-6">
+                        <label for="mother_name" class="form-label fw-bold small text-muted">MOTHER NAME</label>
+                        <input type="text" id="mother_name" name="mother_name" 
+                               class="form-control" value="{{ request('mother_name') }}" placeholder="Enter Mother Name">
+                    </div>
+
                     {{-- Date of Birth --}}
                     <div class="col-md-6">
                         <label for="dob" class="form-label fw-bold small text-muted">DATE OF BIRTH</label>
@@ -39,51 +64,24 @@
                                class="form-control" value="{{ request('dob') }}">
                     </div>
 
+                    {{-- Aadhaar Card Upload --}}
+                    <div class="col-md-6">
+                        <label for="aadhar_card" class="form-label fw-bold small text-muted">AADHAAR CARD</label>
+                        <input type="file" id="aadhar_card" name="aadhar_card" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                    </div>
+
+                    {{-- Marksheet Upload --}}
+                    <div class="col-md-6">
+                        <label for="marksheet" class="form-label fw-bold small text-muted">MARKSHEET</label>
+                        <input type="file" id="marksheet" name="marksheet" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                    </div>
+
                     {{-- Buttons --}}
                     <div class="col-md-12 d-flex gap-2 mt-3">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                         <a href="{{ route('home') }}" class="btn btn-secondary">Reset</a>
                     </div>
                 </form>
-            </div>
-
-            {{-- Search Results --}}
-            <div class="card-body">
-                @if(isset($students))
-                    <div class="table-responsive text-nowrap">
-                        <table class="table table-bordered" id="usersTable">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Application Number</th>
-                                    <th>Gender</th>
-                                    <th>Date of birth</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($students as $student)
-                                    <tr>
-                                        <td>{{ $student->student_name }}</td>
-                                        <td>{{ $student->application_no }}</td>
-                                        <td>{{ $student->gender }}</td>
-                                        <td>{{ $student->dob }}</td>
-                                        <td>
-                                            <a href="{{ route('show', $student->id) }}" class="btn btn-sm btn-primary">View</a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center">No students found.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-end mt-4 mb-2">
-                        {{ $students->links() }}
-                    </div>
-                @endif
             </div>
         </div>
     </div>

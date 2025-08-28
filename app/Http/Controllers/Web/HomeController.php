@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Student;
+use App\Models\StudentApplication;
 use Mail,Hash,File,Auth,DB,Helper,Exception,Session,Redirect,Validator;
 use Carbon\Carbon;
 use App\Models\Notification;
 use App\Models\NotificationUser;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 
 class HomeController extends Controller
@@ -19,33 +22,49 @@ class HomeController extends Controller
         return view('web.home.index');
     }
 
+    public function submitStudent(Request $request)
+    {
+        // ✅ Ensure folder exists
+        if (!Storage::disk('public')->exists('student_docs')) {
+            Storage::disk('public')->makeDirectory('student_docs');
+        }
 
-    // public function searchStudent(Request $request)
-    // {
-    //     $students = null;
+        // ✅ Store files
+        $aadharPath   = $request->file('aadhar_card')->store('student_docs', 'public');
+        $marksheetPath = $request->file('marksheet')->store('student_docs', 'public');
 
-    //     $srNumber = trim((string) $request->input('sr_number', ''));
-    //     $phone = trim((string) $request->input('phone', ''));
+        $aadharUrl   = asset('storage/' . $aadharPath);
+        $marksheetUrl = asset('storage/' . $marksheetPath);
 
-    //     if ($srNumber !== '' || $phone !== '') {
-    //         $query = Student::query();
+        // ✅ Save in DB
+        StudentApplication::create([
+            'application_no' => $request->application_no,
+            'mobile'         => $request->mobile,
+            'father_name'    => $request->father_name,
+            'mother_name'    => $request->mother_name,
+            'dob'            => $request->dob,
+            'aadhar_card'    => $aadharUrl,
+            'marksheet'      => $marksheetUrl,
+        ]);
 
-    //         if ($srNumber !== '' && $phone !== '') {
-    //             $query->where(function ($q) use ($srNumber, $phone) {
-    //                 $q->where('sr_number', $srNumber)
-    //                   ->orWhere('phone', $phone);
-    //             });
-    //         } elseif ($srNumber !== '') {
-    //             $query->where('sr_number', $srNumber);
-    //         } elseif ($phone !== '') {
-    //             $query->where('phone', $phone);
-    //         }
+        // ✅ Generate unique application_request_id
+        $applicationRequestId = strtoupper('APP-' . uniqid() . '-' . rand(1000, 9999));
+        // OR use: $applicationRequestId = Str::uuid();
 
-    //         $students = $query->orderBy('id', 'desc')->paginate(10)->appends($request->only(['sr_number', 'phone']));
-    //     }
+        // ✅ Save in DB
+        StudentApplication::create([
+            'application_request_id' => $applicationRequestId,
+            'application_no'         => $request->application_no,
+            'mobile'                 => $request->mobile,
+            'father_name'            => $request->father_name,
+            'mother_name'            => $request->mother_name,
+            'dob'                    => $request->dob,
+            'aadhar_card'            => $aadharUrl,
+            'marksheet'              => $marksheetUrl,
+        ]);
 
-    //     return view('web.home.index', compact('students'));
-    // }
+        return redirect()->back()->with('success', 'Student application submitted successfully.');
+    }
 
 
     public function searchStudent(Request $request)

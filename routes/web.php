@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\StudentInfoController;
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/submit', [HomeController::class, 'submitStudent'])->name('submit.student');
 Route::get('/search', [HomeController::class, 'searchStudent'])->name('search.student');
 Route::get("show/{id}", [HomeController::class, 'show'])->name('show');
 
