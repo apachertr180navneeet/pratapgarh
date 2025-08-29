@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-6">
             <h5 class="py-2 mb-2">
-                <span class="text-primary fw-light">Stutdent Info</span>
+                <span class="text-primary fw-light">Student Info</span>
             </h5>
         </div>
         <div class="col-md-6 text-end">
@@ -29,11 +29,62 @@
                                     <th>Mobile</th>
                                     <th>Father Name</th>
                                     <th>Mother Name</th>
+                                    <th>Aadhar Card</th>
+                                    <th>Marksheet</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                               
+                                @foreach($applications as $app)
+                                    <tr>
+                                        <td>{{ $app->application_request_id }}</td>
+                                        <td>
+                                            @if($app->link == 1)
+                                                <a href="{{ route('admin.student.info.show', $app->student_id) }}">
+                                                    {{ $app->application_no }}
+                                                </a>
+                                            @else
+                                                {{ $app->application_no }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $app->mobile }}</td>
+                                        <td>
+                                            @if($app->link == 1)
+                                                <a href="{{ route('admin.student.info.show', $app->student_id) }}">
+                                                    {{ $app->father_name }}
+                                                </a>
+                                            @else
+                                                {{ $app->father_name }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $app->mother_name }}</td>
+                                        <td>
+                                            @if($app->aadhar_card)
+                                                <a href="{{ $app->aadhar_card }}" target="_blank" class="btn btn-sm btn-info">
+                                                    View
+                                                </a>
+                                            @else
+                                                <span class="text-muted">N/A</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($app->marksheet)
+                                                <a href="{{ $app->marksheet }}" target="_blank" class="btn btn-sm btn-secondary">
+                                                    View
+                                                </a>
+                                            @else
+                                                <span class="text-muted">N/A</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($app->link == 1)
+                                                <span class="badge bg-success">Linked</span>
+                                            @else
+                                                <span class="badge bg-warning">Not Linked</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
 

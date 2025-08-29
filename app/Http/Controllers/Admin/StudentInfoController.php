@@ -173,10 +173,23 @@ class StudentInfoController extends Controller
         return $pdf->download('Transfer_Certificate_'.$student->student_name.'.pdf');
     }
 
-    public function studentApplicationList() {
+   public function studentApplicationList()
+    {
+        $applications = DB::table('student_application as sa')
+            ->leftJoin('students as s', function ($join) {
+                $join->on(DB::raw('TRIM(LOWER(sa.mobile))'), '=', DB::raw('TRIM(LOWER(s.mobile))'))
+                    ->on(DB::raw('TRIM(LOWER(sa.father_name))'), '=', DB::raw('TRIM(LOWER(s.father_name))'))
+                    ->on(DB::raw('TRIM(LOWER(sa.mother_name))'), '=', DB::raw('TRIM(LOWER(s.mother_name))'))
+                    ->on(DB::raw('TRIM(LOWER(sa.application_no))'), '=', DB::raw('TRIM(LOWER(s.application_no))'));
+            })
+            ->select(
+                'sa.*',
+                's.id as student_id',
+                DB::raw('CASE WHEN s.id IS NOT NULL THEN 1 ELSE 0 END as link')
+            )
+            ->get();
 
-        // Pass paginated data to view
-        return view('admin.student_info.student_application_list');
+        return view('admin.student_info.student_application_list', compact('applications'));
     }
     
 
