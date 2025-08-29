@@ -27,10 +27,17 @@
 			</a>
 		</li>
 
-		<li class="menu-item {{ request()->is('admin/import') ? 'active' : ''}}">
+		<li class="menu-item {{ request()->is('admin/student-import') ? 'active' : ''}}">
 			<a href="{{route('admin.student.info.import')}}" class="menu-link">
 				<i class="menu-icon tf-icons bx bx-group"></i>
 				<div data-i18n="User">Student Import</div>
+			</a>
+		</li>
+
+		<li class="menu-item {{ request()->is('admin/student/application-list') ? 'active' : ''}}">
+			<a href="{{route('admin.student.info.application.list')}}" class="menu-link">
+				<i class="menu-icon tf-icons bx bx-group"></i>
+				<div data-i18n="User">Student Application</div>
 			</a>
 		</li>
 	</ul>

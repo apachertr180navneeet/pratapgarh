@@ -173,5 +173,12 @@ class StudentInfoController extends Controller
         return $pdf->download('Transfer_Certificate_'.$student->student_name.'.pdf');
     }
 
+    public function studentApplicationList() {
+
+        // Pass paginated data to view
+        return view('admin.student_info.student_application_list');
+    }
+    
+
 
 }

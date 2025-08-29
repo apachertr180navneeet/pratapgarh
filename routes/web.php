@@ -70,6 +70,8 @@ Route::name('admin.')->prefix('admin')->group(function () {
 
             Route::post('/student/generate-tc', [StudentInfoController::class, 'generateTC'])->name('generate.tc');
 
+            Route::get("/student/application-list", [StudentInfoController::class, 'studentApplicationList'])->name('application.list');
+
 
         });
     });
