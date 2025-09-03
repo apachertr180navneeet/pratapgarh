@@ -67,13 +67,13 @@
                     {{-- Aadhaar Card Upload --}}
                     <div class="col-md-6">
                         <label for="aadhar_card" class="form-label fw-bold small text-muted">AADHAAR CARD</label>
-                        <input type="file" id="aadhar_card" name="aadhar_card" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                        <input type="file" id="aadhar_card" name="aadhar_card" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
                     </div>
 
                     {{-- Marksheet Upload --}}
                     <div class="col-md-6">
                         <label for="marksheet" class="form-label fw-bold small text-muted">MARKSHEET</label>
-                        <input type="file" id="marksheet" name="marksheet" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                        <input type="file" id="marksheet" name="marksheet" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
                     </div>
 
                     {{-- Buttons --}}
