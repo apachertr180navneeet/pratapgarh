@@ -20,5 +20,8 @@ class StudentApplication extends Model
         'dob',
         'aadhar_card',
         'marksheet',
+        'document_type',
+        'cc_cretifacate',
+        'tc_cartificate'
     ];
 }

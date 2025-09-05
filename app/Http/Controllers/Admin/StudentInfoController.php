@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Student;
+use App\Models\StudentApplication;
 use Mail,Hash,File,Auth,DB,Helper,Exception,Session,Redirect,Validator;
 use Carbon\Carbon;
 use App\Models\Notification;
@@ -162,15 +163,93 @@ class StudentInfoController extends Controller
         return back()->with('success', 'Students imported successfully!');
     }
 
-    public function generateTC(Request $request)
+    // public function generateCC(Request $request)
+    // {
+    //     $student = Student::findOrFail($request->student_id);
+        
+    //     // Generate 6 digit unique number
+    //     $uniqueNumber = mt_rand(100000, 999999);
+        
+    //     // Pass student data and unique number to view
+    //     $data = [
+    //         'student' => $student,
+    //         'certificate_number' => $uniqueNumber,
+    //         'certificate_type' => 'CC'
+    //     ];
+        
+    //     $pdf = Pdf::loadView('admin.student_info.cc_template', $data);
+        
+    //     // Download directly
+    //     return $pdf->download('C_Certificate_'.$student->student_name.'_'.$uniqueNumber.'.pdf');
+    // }
+
+
+    public function generateCC(Request $request)
     {
         $student = Student::findOrFail($request->student_id);
 
-        // Pass student data to TC view
-        $pdf = Pdf::loadView('admin.student_info.tc_template', compact('student'));
+        // Generate 6 digit unique number
+        $uniqueNumber = mt_rand(100000, 999999);
 
+        // Pass student data and unique number to view
+        $data = [
+            'student' => $student,
+            'certificate_number' => $uniqueNumber,
+            'certificate_type' => 'CC'
+        ];
+
+        $pdf = Pdf::loadView('admin.student_info.cc_template', $data);
+
+        // Generate filename
+        $filename = 'C_Certificate_'.$student->student_name.'_'.$uniqueNumber.'.pdf';
+
+        // Create documents directory if it doesn't exist
+        $path = public_path('uploads/documents');
+        if(!File::isDirectory($path)){
+            File::makeDirectory($path, 0777, true, true);
+        }
+
+        // Save PDF file
+        $pdf->save($path.'/'.$filename);
+
+        // Generate full URL for the saved file
+        $fileUrl = url('uploads/documents/'.$filename);
+
+        // ✅ Insert or Update student_application record
+        StudentApplication::updateOrCreate(
+            ['application_no' => $student->application_no], // Condition
+            [
+                'mobile'         => $student->mobile,
+                'father_name'    => $student->father_name,
+                'mother_name'    => $student->mother_name,
+                'dob'            => $student->dob,
+                'cc_cretifacate' => $fileUrl,   // Save CC certificate url
+                'updated_at'     => now()
+            ]
+        );
+
+        // Download file
+        return $pdf->download($filename);
+    }
+
+    public function generateTC(Request $request)
+    {
+        $student = Student::findOrFail($request->student_id);
+        
+        // Generate 6 digit unique number
+        $uniqueNumber = mt_rand(100000, 999999);
+        
+        // Pass student data and unique number to view
+        $data = [
+            'student' => $student,
+            'certificate_number' => $uniqueNumber,
+            'certificate_type' => 'TC'
+        ];
+        
+        $pdf = Pdf::loadView('admin.student_info.tc_template', $data);
+        
         // Download directly
-        return $pdf->download('Transfer_Certificate_'.$student->student_name.'.pdf');
+        return $pdf->download('Transfer_Certificate_'.$student->student_name.'_'.$uniqueNumber.'.pdf');
     }
 
    public function studentApplicationList()

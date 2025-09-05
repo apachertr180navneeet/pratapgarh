@@ -73,7 +73,18 @@
                     {{-- Marksheet Upload --}}
                     <div class="col-md-6">
                         <label for="marksheet" class="form-label fw-bold small text-muted">MARKSHEET</label>
-                        <input type="file" id="marksheet" name="marksheet" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                        <input type="file" id="marksheet" name="marksheet" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required                                                                                        >
+                    </div>
+
+                    {{-- Combined CC and TC Dropdown --}}
+                    <div class="col-md-6">
+                        <label for="document_type" class="form-label fw-bold small text-muted">CERTIFICATE (CC/TC)</label>
+                        <select id="document_type" name="document_type" class="form-select">
+                            <option value="">Select Certificate</option>
+                            <option value="both">Both CC & TC Available</option>
+                            <option value="cc_only">Only CC Available</option>
+                            <option value="tc_only">Only TC Available</option>
+                        </select>
                     </div>
 
                     {{-- Buttons --}}
@@ -84,7 +95,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div>                                                                                                                                                              
 </div>
 @endsection
 

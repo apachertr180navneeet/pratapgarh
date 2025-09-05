@@ -24,6 +24,7 @@ class HomeController extends Controller
 
     public function submitStudent(Request $request)
     {
+        //dd($request->document_type);
         // ✅ Ensure folder exists
         if (!Storage::disk('public')->exists('student_docs')) {
             Storage::disk('public')->makeDirectory('student_docs');
@@ -35,17 +36,6 @@ class HomeController extends Controller
 
         $aadharUrl   = asset('storage/' . $aadharPath);
         $marksheetUrl = asset('storage/' . $marksheetPath);
-
-        // ✅ Save in DB
-        StudentApplication::create([
-            'application_no' => $request->application_no,
-            'mobile'         => $request->mobile,
-            'father_name'    => $request->father_name,
-            'mother_name'    => $request->mother_name,
-            'dob'            => $request->dob,
-            'aadhar_card'    => $aadharUrl,
-            'marksheet'      => $marksheetUrl,
-        ]);
 
         // ✅ Generate unique application_request_id
         $applicationRequestId = strtoupper('APP-' . uniqid() . '-' . rand(1000, 9999));
@@ -59,6 +49,7 @@ class HomeController extends Controller
             'father_name'            => $request->father_name,
             'mother_name'            => $request->mother_name,
             'dob'                    => $request->dob,
+            'document_type'          => $request->document_type,
             'aadhar_card'            => $aadharUrl,
             'marksheet'              => $marksheetUrl,
         ]);

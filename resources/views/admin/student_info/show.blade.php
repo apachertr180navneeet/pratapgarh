@@ -213,7 +213,17 @@
 
                         </div>
                     </form>
-                    {{-- ✅ Generate TC Submit Button --}}
+                    {{-- ✅ Generate CC Submit Button --}}
+                    <div class="mt-3 text-end">
+                        <form action="{{ route('admin.student.info.generate.cc') }}" method="POST" target="_blank">
+                            @csrf
+                            <input type="hidden" name="student_id" value="{{ $student->id }}">
+                            <button type="submit" class="btn btn-primary">
+                                Generate CC
+                            </button>
+                        </form>
+                    </div>
+
                     <div class="mt-3 text-end">
                         <form action="{{ route('admin.student.info.generate.tc') }}" method="POST" target="_blank">
                             @csrf

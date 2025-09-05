@@ -31,6 +31,7 @@
                                     <th>Mother Name</th>
                                     <th>Aadhar Card</th>
                                     <th>Marksheet</th>
+                                    <th>Document type</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -76,6 +77,7 @@
                                                 <span class="text-muted">N/A</span>
                                             @endif
                                         </td>
+                                        <td>{{ $app->document_type }}</td>
                                         <td>
                                             @if($app->link == 1)
                                                 <span class="badge bg-success">Linked</span>
