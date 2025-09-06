@@ -64,6 +64,8 @@ Route::name('admin.')->prefix('admin')->group(function () {
 
             Route::get("search", [StudentInfoController::class, 'search'])->name('search');
 
+            Route::post("update", [StudentInfoController::class, 'update'])->name('update');
+
             Route::get("student-import", [StudentInfoController::class, 'import'])->name('import');
 
             Route::post("student-import-post", [StudentInfoController::class, 'importpost'])->name('import.post');

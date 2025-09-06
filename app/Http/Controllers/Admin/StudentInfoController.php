@@ -39,6 +39,80 @@ class StudentInfoController extends Controller
         return view('admin.student_info.show', compact('student'));
     }
 
+    public function update(Request $request)
+    {
+        // Validate fields (basic rules, adjust as per your needs)
+        $validated = $request->validate([
+            'sr_no'          => 'nullable',
+            'course_name'    => 'nullable',
+            'application_no' => 'nullable',
+            'application_date' => 'nullable',
+            'student_name'   => 'nullable',
+            'category_name'  => 'nullable',
+            'mbc_candidate'  => 'nullable',
+            'disable'        => 'nullable',
+            'minority'       => 'nullable',
+            'minority_cast'  => 'nullable',
+            'ews'            => 'nullable',
+            'dob'            => 'nullable',
+            'gender'         => 'nullable',
+            'mobile'         => 'nullable',
+            'father_name'    => 'nullable',
+            'mother_name'    => 'nullable',
+            'current_address'=> 'nullable',
+            'current_state'  => 'nullable',
+            'current_district'=> 'nullable',
+            'current_tehsil' => 'nullable',
+            'current_pincode'=> 'nullable',
+            'permanent_address' => 'nullable',
+            'permanent_state'=> 'nullable',
+            'permanent_district'=> 'nullable',
+            'permanent_pincode'=> 'nullable',
+            'percentage'     => 'nullable',
+            'merit_no'       => 'nullable',
+            'seatcategory'   => 'nullable',
+            'feefor'         => 'nullable',
+            'total_fees'     => 'nullable',
+            'token_no'       => 'nullable',
+            'token_date'     => 'nullable',
+            'seaction'       => 'nullable',
+            'scholor_no'     => 'nullable',
+            'compulsary_subject' => 'nullable',
+            'final_subject'  => 'nullable',
+            'subject_combination_1' => 'nullable',
+            'subject_combination_2' => 'nullable',
+            'subject_combination_3' => 'nullable',
+            'subject_combination_4' => 'nullable',
+            'subject_combination_5' => 'nullable',
+            'subject_combination_6' => 'nullable',
+            'subject_combination_7' => 'nullable',
+            'bpl'            => 'nullable',
+            'willingness_to_join_professional_course' => 'nullable',
+            '12th_percentage'=> 'nullable',
+            'ydc'            => 'nullable',
+            'ncc'            => 'nullable',
+            'nss'            => 'nullable',
+            'rover_rengering'=> 'nullable',
+            'human_right_cell'=> 'nullable',
+            'women_cell'     => 'nullable',
+            'email'          => 'nullable',
+            'roll_no'        => 'nullable',
+            'pass_year'      => 'nullable',
+            'total_marks'    => 'nullable',
+            'obtain_marks'   => 'nullable',
+            'board'          => 'nullable',
+            'class'          => 'nullable',
+        ]);
+
+        // Find student
+        $student = Student::findOrFail($request->student_id);
+
+        // Update record
+        $student->update($validated);
+
+        return redirect()->back()->with('success', 'Student updated successfully.');
+    }
+
 
 
     public function search(Request $request)
@@ -162,28 +236,6 @@ class StudentInfoController extends Controller
 
         return back()->with('success', 'Students imported successfully!');
     }
-
-    // public function generateCC(Request $request)
-    // {
-    //     $student = Student::findOrFail($request->student_id);
-        
-    //     // Generate 6 digit unique number
-    //     $uniqueNumber = mt_rand(100000, 999999);
-        
-    //     // Pass student data and unique number to view
-    //     $data = [
-    //         'student' => $student,
-    //         'certificate_number' => $uniqueNumber,
-    //         'certificate_type' => 'CC'
-    //     ];
-        
-    //     $pdf = Pdf::loadView('admin.student_info.cc_template', $data);
-        
-    //     // Download directly
-    //     return $pdf->download('C_Certificate_'.$student->student_name.'_'.$uniqueNumber.'.pdf');
-    // }
-
-
     public function generateCC(Request $request)
     {
         $student = Student::findOrFail($request->student_id);
@@ -204,7 +256,7 @@ class StudentInfoController extends Controller
         $filename = 'C_Certificate_'.$student->student_name.'_'.$uniqueNumber.'.pdf';
 
         // Create documents directory if it doesn't exist
-        $path = public_path('uploads/documents');
+        $path = public_path('public/uploads/documents');
         if(!File::isDirectory($path)){
             File::makeDirectory($path, 0777, true, true);
         }
@@ -235,21 +287,61 @@ class StudentInfoController extends Controller
     public function generateTC(Request $request)
     {
         $student = Student::findOrFail($request->student_id);
-        
-        // Generate 6 digit unique number
-        $uniqueNumber = mt_rand(100000, 999999);
-        
-        // Pass student data and unique number to view
+
+        // ✅ Fetch last TC serial number
+        $lastSerial = StudentApplication::max('tc_serial_no'); 
+        $nextSerial = $lastSerial ? $lastSerial + 1 : 1;
+        $serialNumber = str_pad($nextSerial, 6, '0', STR_PAD_LEFT);
+
+        // ✅ Fetch last enrollment number
+        $lastEnroll = StudentApplication::max('enrollment_no'); 
+        $nextEnroll = $lastEnroll ? intval(substr($lastEnroll, 2)) + 1 : 1;
+
+        // Format enrollment number as EN000001, EN000002, ...
+        $enrollmentNo = 'EN' . str_pad($nextEnroll, 6, '0', STR_PAD_LEFT);
+
+        // Pass data to view
         $data = [
-            'student' => $student,
-            'certificate_number' => $uniqueNumber,
-            'certificate_type' => 'TC'
+            'student'            => $student,
+            'certificate_number' => $serialNumber,
+            'enrollment_number'  => $enrollmentNo,
+            'certificate_type'   => 'TC'
         ];
-        
+
         $pdf = Pdf::loadView('admin.student_info.tc_template', $data);
-        
-        // Download directly
-        return $pdf->download('Transfer_Certificate_'.$student->student_name.'_'.$uniqueNumber.'.pdf');
+
+        // Generate filename
+        $filename = 'Transfer_Certificate_'.$student->student_name.'_'.$serialNumber.'.pdf';
+
+        // Ensure directory exists
+        $path = public_path('uploads/documents');
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0777, true, true);
+        }
+
+        // Save PDF
+        $pdf->save($path.'/'.$filename);
+
+        // Full URL
+        $fileUrl = url('uploads/documents/'.$filename);
+
+        // ✅ Save or update record with unique TC & enrollment
+        StudentApplication::updateOrCreate(
+            ['application_no' => $student->application_no],
+            [
+                'mobile'          => $student->mobile,
+                'father_name'     => $student->father_name,
+                'mother_name'     => $student->mother_name,
+                'dob'             => $student->dob,
+                'tc_certificate'  => $fileUrl,
+                'tc_serial_no'    => $nextSerial,     // keep numeric serial
+                'enrollment_no'   => $enrollmentNo,   // unique generated EN number
+                'updated_at'      => now()
+            ]
+        );
+
+        // Download file
+        return $pdf->download($filename);
     }
 
    public function studentApplicationList()

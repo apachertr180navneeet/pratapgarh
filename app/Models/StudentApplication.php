@@ -20,6 +20,10 @@ class StudentApplication extends Model
         'dob',
         'aadhar_card',
         'marksheet',
+        'marksheetone',
+        'marksheettwo',
+        'marksheetthree',
+        'marksheetfour',
         'document_type',
         'cc_cretifacate',
         'tc_cartificate'

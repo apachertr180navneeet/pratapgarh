@@ -33,9 +33,38 @@ class HomeController extends Controller
         // ✅ Store files
         $aadharPath   = $request->file('aadhar_card')->store('student_docs', 'public');
         $marksheetPath = $request->file('marksheet')->store('student_docs', 'public');
+        $marksheetOnePath = $request->file('marksheetone')->store('student_docs', 'public');
+        $marksheetTwoPath = $request->file('marksheettwo')->store('student_docs', 'public');
+        if($request->hasFile('marksheetthree')){
+            $marksheetThreePath = $request->file('marksheetthree')->store('student_docs', 'public');
+        } else {
+            $marksheetThreePath = null;
+
+        }
+
+        if($request->hasFile('marksheetfour')){
+            $marksheetFourPath = $request->file('marksheetfour')->store('student_docs', 'public');
+        } else {
+            $marksheetFourPath = null;
+
+        }
+        //$marksheetThreePath = $request->file('marksheetthree')->store('student_docs', 'public');
+        //$marksheetFourPath = $request->file('marksheetfour')->store('student_docs', 'public');
 
         $aadharUrl   = asset('storage/' . $aadharPath);
         $marksheetUrl = asset('storage/' . $marksheetPath);
+        $marksheetOneUrl = asset('storage/' . $marksheetOnePath);
+        $marksheetTwoUrl = asset('storage/' . $marksheetTwoPath);
+        if($marksheetThreePath){
+            $marksheetThreeUrl = asset('storage/' . $marksheetThreePath);
+        } else {
+            $marksheetThreeUrl = null;
+        }
+        if($marksheetFourPath){
+            $marksheetFourUrl = asset('storage/' . $marksheetFourPath);
+        } else {
+            $marksheetFourUrl = null;
+        }
 
         // ✅ Generate unique application_request_id
         $applicationRequestId = strtoupper('APP-' . uniqid() . '-' . rand(1000, 9999));
@@ -52,6 +81,11 @@ class HomeController extends Controller
             'document_type'          => $request->document_type,
             'aadhar_card'            => $aadharUrl,
             'marksheet'              => $marksheetUrl,
+            'marksheet'              => $marksheetUrl,
+            'marksheetone'           => $marksheetOneUrl,
+            'marksheettwo'          => $marksheetTwoUrl,
+            'marksheetthree'        => $marksheetThreeUrl,
+            'marksheetfour'        => $marksheetFourUrl,
         ]);
 
         return redirect()->back()->with('success', 'Student application submitted successfully.');

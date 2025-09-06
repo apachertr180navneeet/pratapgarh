@@ -25,8 +25,10 @@
     </div>
 
     <div>
-      <strong>Serial No.:</strong> {{ $student->sr_no ?? '____' }} 
-      <span style="float:right;"><strong>Date:</strong> {{ date('d-m-Y') }}</span>
+      <strong>Serial No.:</strong> {{ $certificate_type }}/{{ $certificate_number }}/{{ date('Y') }}
+      &nbsp;&nbsp; 
+      <strong>Date:</strong> {{ date('d-m-Y') }}
+      <span style="float:right;"><strong>Enrollment No.:</strong> {{ $enrollment_number }}</span>
     </div>
 
     <table>

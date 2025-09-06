@@ -5,7 +5,6 @@
     <title>Character Certificate</title>
     <style>
         body {
-            font-family: DejaVu Sans, sans-serif !important;
             font-size: 14px;
             line-height: 1.6;
         }

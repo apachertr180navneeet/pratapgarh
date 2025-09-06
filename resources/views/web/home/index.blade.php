@@ -72,8 +72,24 @@
 
                     {{-- Marksheet Upload --}}
                     <div class="col-md-6">
-                        <label for="marksheet" class="form-label fw-bold small text-muted">MARKSHEET</label>
-                        <input type="file" id="marksheet" name="marksheet" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required                                                                                        >
+                        <label for="marksheet" class="form-label fw-bold small text-muted">MARKSHEET 1</label>
+                        <input type="file" id="marksheet" name="marksheet" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="marksheet" class="form-label fw-bold small text-muted">MARKSHEET 2</label>
+                        <input type="file" id="marksheet" name="marksheetone" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required                                                                                        >
+                    </div>
+                    <div class="col-md-6">
+                        <label for="marksheet" class="form-label fw-bold small text-muted">MARKSHEET 3</label>
+                        <input type="file" id="marksheet" name="marksheettwo" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="marksheet" class="form-label fw-bold small text-muted">MARKSHEET 4</label>
+                        <input type="file" id="marksheet" name="marksheetthree" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="marksheet" class="form-label fw-bold small text-muted">MARKSHEET 5</label>
+                        <input type="file" id="marksheet" name="marksheetfour" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
                     </div>
 
                     {{-- Combined CC and TC Dropdown --}}

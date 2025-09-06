@@ -70,11 +70,33 @@
                                         </td>
                                         <td>
                                             @if($app->marksheet)
-                                                <a href="{{ $app->marksheet }}" target="_blank" class="btn btn-sm btn-secondary">
+                                                <a href="{{ $app->marksheet }}" target="_blank" class="btn btn-sm btn-secondary mt-2 mb-2">
                                                     View
                                                 </a>
-                                            @else
-                                                <span class="text-muted">N/A</span>
+                                            @endif
+                                            <br>
+                                            @if($app->marksheetone)
+                                                <a href="{{ $app->marksheetone }}" target="_blank" class="btn btn-sm btn-secondary mt-2 mb-2">
+                                                    View
+                                                </a>
+                                            @endif
+                                            <br>
+                                            @if($app->marksheettwo)
+                                                <a href="{{ $app->marksheettwo }}" target="_blank" class="btn btn-sm btn-secondary mt-2 mb-2">
+                                                    View
+                                                </a>
+                                            @endif
+                                            <br>
+                                            @if($app->marksheetthree)
+                                                <a href="{{ $app->marksheetthree }}" target="_blank" class="btn btn-sm btn-secondary mt-2 mb-2">
+                                                    View
+                                                </a>
+                                            @endif
+                                            <br>
+                                            @if($app->marksheetfour)
+                                                <a href="{{ $app->marksheetfour }}" target="_blank" class="btn btn-sm btn-secondary mt-2 mb-2">
+                                                    View
+                                                </a>
                                             @endif
                                         </td>
                                         <td>{{ $app->document_type }}</td>
